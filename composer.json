@@ -1,0 +1,22 @@
+{
+  "name": "comwrapez/ez-frontend-bundle",
+  "license": "MIT",
+  "type": "symfony-bundle",
+  "description": "Comwrap eZ Frontend Bundle",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Chunliang Deng",
+      "email": "cdeng@comwrap.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3",
+    "symfony/webpack-encore-bundle": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Comwrap\\Bundle\\ComwrapEzFrontendBundle\\": ""
+    }
+  }
+}

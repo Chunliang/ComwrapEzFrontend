@@ -1,0 +1,6 @@
+const Encore = require('@symfony/webpack-encore');
+
+// Load comwrap frontend configs
+const getComwrapEzFrontendConfig = require('./comwrap.ezfrontend.webpack.config.js');
+const comwrapEzFrontendConfig = getComwrapEzFrontendConfig(Encore);
+module.exports = [ comwrapEzFrontendConfig ];

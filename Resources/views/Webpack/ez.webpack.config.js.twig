@@ -1,0 +1,7 @@
+// Put your config here.
+const getComwrapEzFrontendConfig = require('./comwrap.ezfrontend.webpack.config.js');
+const comwrapEzFrontendConfig = getComwrapEzFrontendConfig(Encore);
+module.exports = [ eZConfig, comwrapEzFrontendConfig ];
+
+// comment-out this line if you've uncommented the above lines
+//module.exports = [ eZConfig, ...customConfigs ];

@@ -1,0 +1,66 @@
+const util = require('util');
+const exec = util.promisify(require('child_process').exec)
+const fs = require('fs')
+const config = require('./comwrap.ezfrontend.config.js')
+
+module.exports = (Encore) => {
+
+    // init frontend config
+    let comwrapEzFrontendConfig = null
+
+    // if frontend path config do exists
+    if( config instanceof Object &&
+        config.hasOwnProperty('frontend_path') &&
+        config.frontend_path
+    ){
+        const frontendPath = config.frontend_path
+
+        // check if frontend path exists
+        if(fs.existsSync(frontendPath)) {
+
+            // run git pull in frontend directory
+            async function pullFrontend(){
+                const { stdout, stderr } = await exec('cd ' + frontendPath + ' && git pull')
+                console.log('Git:', stdout)
+            }
+            pullFrontend()
+
+            // do config encore
+            Encore
+                .setOutputPath('web/assets/')
+                .setPublicPath('/assets')
+                .addEntry('app', [
+                    frontendPath + '/src/assets/scripts/main.js',
+                    frontendPath + '/src/assets/styles/main.scss'
+                ])
+                .copyFiles({
+                    from: frontendPath + '/src/assets/images',
+                    to: 'images/[path][name].[ext]',
+                })
+                .copyFiles({
+                    from: frontendPath + '/src/assets/libs',
+                    to: 'libs/[path][name].[ext]',
+                })
+                .splitEntryChunks()
+                .enableSingleRuntimeChunk()
+                .cleanupOutputBeforeBuild()
+                .enableBuildNotifications()
+                .enableSourceMaps(!Encore.isProduction())
+                .enableVersioning(Encore.isProduction())
+                .enableSassLoader()
+                .configureBabelPresetEnv((config) => {
+                //config.useBuiltIns = 'usage'
+                config.corejs = 2
+            })
+
+            comwrapEzFrontendConfig = Encore.getWebpackConfig()
+            comwrapEzFrontendConfig.name = 'comwrap_ez_frontend'
+
+        }else{
+            console.error('Frontend path not exists: ' + frontendPath )
+        }
+    }else{
+        console.error('Frontend path not found in config.')
+    }
+    return comwrapEzFrontendConfig
+}

@@ -1,0 +1,13 @@
+services:
+  Comwrap\Bundle\ComwrapEzFrontendBundle\Service\FrontendHandler:
+    public: true
+    arguments: ["@service_container", "", ""]
+  # Comwrap\Bundle\ComwrapEzFrontendBundle\DataCollector\RequestCollector:
+  #     tags:
+  #         -
+  #             name:     data_collector
+  #             template: 'ComwrapEzFrontendBundle:Webprofiler:main.html.twig'
+  #             id:       'app.request_frontend_collector'
+  #             # optional priority
+  #             # priority: 300
+  #     public: true
