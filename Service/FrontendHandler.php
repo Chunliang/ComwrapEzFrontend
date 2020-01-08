@@ -225,6 +225,7 @@ class FrontendHandler
         $output->writeln("<fg=cyan>1. CSS Tags</fg=cyan>\n");
         $output->writeln("{{ encore_entry_link_tags('app', null, 'comwrap_ez_frontend') }}");
         foreach($libCss as $css){
+            $css = str_replace('/assets/', '/assets/frontend/build/', $css);
             $output->writeln("<link rel='stylesheet' href='".$css."'/>");
         }
         $output->writeln('');
@@ -233,6 +234,7 @@ class FrontendHandler
         $output->writeln("<fg=cyan>2. Script Tags</fg=cyan>\n");
         $output->writeln("{{ encore_entry_script_tags('app', null, 'comwrap_ez_frontend') }}");
         foreach($libScript as $js){
+            $js = str_replace('/assets/', '/assets/frontend/build/', $js);
             $output->writeln("<script defer src='".$js."'></script>");
         }
         $output->writeln('');

@@ -27,8 +27,8 @@ module.exports = (Encore) => {
 
             // do config encore
             Encore
-                .setOutputPath('web/assets/')
-                .setPublicPath('/assets')
+                .setOutputPath('web/assets/frontend/build/')
+                .setPublicPath('/assets/frontend/build')
                 .addEntry('app', [
                     frontendPath + '/src/assets/scripts/main.js',
                     frontendPath + '/src/assets/styles/main.scss'
