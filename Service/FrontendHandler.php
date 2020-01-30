@@ -15,7 +15,7 @@ class FrontendHandler
     private $frontendPath;
     private $componentsSource;
     private $componentsDestination;
-
+    
     const messages = [
         'ERROR_FRONTEND_CONFIG_NOT_FOUND' => "Frontend config was not found, please add the following settings in the 'config.yml' and set their values in 'parameters.yml':\n\ncomwrap_ez_frontend:\n    frontend:\n        source: '%frontend_source_path%'\n        destination: '%backend_components_path%'\n",
         'ERROR_FRONTEND_DIR_NOT_FOUND' => "Frontend Components Directory Not Found: ",
@@ -34,6 +34,7 @@ class FrontendHandler
 
     public function __construct(Container $container, $path, $to)
     {
+
         if(!$path || $path === '' ){
             throw new \Exception(self::messages['ERROR_FRONTEND_CONFIG_NOT_FOUND']);
         }else
@@ -81,13 +82,16 @@ class FrontendHandler
 
         // generate/update the encore webpack config files
         $frontendConfigPath = $projectPath.'/comwrap.ezfrontend.config.js';
-        $frontendConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:frontend.config.js.twig',['path'=>$this->frontendPath]);
+        #$frontendConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:frontend.config.js.twig',['path'=>$this->frontendPath]);
+        $frontendConfigContent =  file_get_contents(__DIR__.'/../Resources/views/Webpack/frontend.config.js.twig');
+        $frontendConfigContent = str_replace('{{ path | raw }}',$this->frontendPath,$frontendConfigContent);
         if(file_put_contents($frontendConfigPath, $frontendConfigContent)){
             $output->writeln("\n<info>Frontend config file was created :\n".$frontendConfigPath."</info>");
         }
 
         $frontendWebpackConfigPath = $projectPath.'/comwrap.ezfrontend.webpack.config.js';
-        $frontendWebpackConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:frontend.webpack.config.js.twig',[]);
+        //$frontendWebpackConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:frontend.webpack.config.js.twig',[]);
+        $frontendWebpackConfigContent =  file_get_contents(__DIR__.'/../Resources/views/Webpack/frontend.webpack.config.js.twig');
         if(file_put_contents($frontendWebpackConfigPath, $frontendWebpackConfigContent)){
             $output->writeln("\n<info>Frontend encore webpack config file was created:\n".$frontendWebpackConfigPath."</info>\n");
         }
@@ -95,7 +99,8 @@ class FrontendHandler
         $webpackConfigPath = $projectPath.'/webpack.config.js';
         $webpackConfigExists = false;
         if(!file_exists($webpackConfigPath)){
-            $webpackConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:webpack.config.js.twig',[]);
+            //$webpackConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:webpack.config.js.twig',[]);
+            $webpackConfigContent =  file_get_contents(__DIR__.'/../Resources/views/Webpack/webpack.config.js.twig');
             if(file_put_contents($webpackConfigPath, $webpackConfigContent)){
                 $output->writeln("<info>Encore webpack config file was created:\n".$webpackConfigPath."</info>\n");
             }
@@ -241,7 +246,8 @@ class FrontendHandler
 
         // output webpack configs
         if($webpackConfigExists===true){
-            $webpackEzConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:ez.webpack.config.js.twig',[]);
+            //$webpackEzConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:ez.webpack.config.js.twig',[]);
+            $webpackEzConfigContent =  file_get_contents(__DIR__.'/../Resources/views/Webpack/ez.webpack.config.js.twig');
             $output->writeln("<fg=cyan>3. Load configs in the eZ Platform 'webpack.config.js'</fg=cyan>");
             $output->writeln("\n<fg=green>".$webpackEzConfigContent.'</fg=green>');
             $output->writeln("\n<fg=cyan>Then run 'yarn encore dev --config-name comwrap_ez_frontend' to update frontend assets.</fg=cyan>");

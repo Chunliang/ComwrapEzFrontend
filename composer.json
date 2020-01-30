@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": "^7.1.3",
-    "symfony/webpack-encore-bundle": "*"
+    "symfony/webpack-encore-bundle": "*",
+    "symfony/process": "*"
   },
   "autoload": {
     "psr-4": {
