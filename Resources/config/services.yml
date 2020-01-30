@@ -2,6 +2,18 @@ services:
   Comwrap\Bundle\ComwrapEzFrontendBundle\Service\FrontendHandler:
     public: true
     arguments: ["@service_container", "", ""]
+  Comwrap\Bundle\ComwrapEzFrontendBundle\Command\InitFrontendComponentsCommand:
+        tags:
+            - { name: 'console.command', command: 'comwrap:frontend:init' }
+  Comwrap\Bundle\ComwrapEzFrontendBundle\Command\ListFrontendComponentsCommand:
+        tags:
+            - { name: 'console.command', command: 'comwrap:frontend:ls' }
+  Comwrap\Bundle\ComwrapEzFrontendBundle\Command\ImportFrontendComponentsCommand:
+        tags:
+            - { name: 'console.command', command: 'comwrap:frontend:import' }
+  Comwrap\Bundle\ComwrapEzFrontendBundle\Command\CompareFrontendComponentsCommand:
+        tags:
+            - { name: 'console.command', command: 'comwrap:frontend:compare' }
   # Comwrap\Bundle\ComwrapEzFrontendBundle\DataCollector\RequestCollector:
   #     tags:
   #         -
