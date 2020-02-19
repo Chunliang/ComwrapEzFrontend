@@ -184,7 +184,7 @@ class FrontendHandler
         if($webpackConfigExists == false){
             // run yarn encore dev
             $process = new Process('yarn encore dev --config-name comwrap_ez_frontend');
-            $output->writeln("<fg=cyan>Running 'yarn encore dev' to generate frontend assets...</fg=cyan>");
+            $output->writeln("<fg=cyan>Running 'yarn encore dev --config-name comwrap_ez_frontend' to generate frontend assets...</fg=cyan>");
             $process->run();
             // executes after the command finishes
             if (!$process->isSuccessful()) {
