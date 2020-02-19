@@ -15,6 +15,7 @@ class FrontendHandler
     private $frontendPath;
     private $componentsSource;
     private $componentsDestination;
+    private $backendAssetsPath;
     
     const messages = [
         'ERROR_FRONTEND_CONFIG_NOT_FOUND' => "Frontend config was not found, please add the following settings in the 'config.yml' and set their values in 'parameters.yml':\n\ncomwrap_ez_frontend:\n    frontend:\n        source: '%frontend_source_path%'\n        destination: '%backend_components_path%'\n",
@@ -32,14 +33,17 @@ class FrontendHandler
         'sass-loader' => '^7.0.1'
     ];
 
-    public function __construct(Container $container, $path, $to)
+    public function __construct(Container $container, $path, $to, $assetspath)
     {
 
         if(!$path || $path === '' ){
             throw new \Exception(self::messages['ERROR_FRONTEND_CONFIG_NOT_FOUND']);
         }else
         if(!$to || $to === '' ){
-            throw new \Exception(self::messages['ERROR_BACKEND_CONFIG_NOT_FOUND']);
+            throw new \Exception(self::messages['ERROR_BACKEND_COMPONENTS_CONFIG_NOT_FOUND']);
+        }else
+        if(!$assetspath || $assetspath === '' ){
+            throw new \Exception(self::messages['ERROR_BACKEND_ASSETS_CONFIG_NOT_FOUND']);
         }else{
 
             $this->container = $container;
@@ -63,12 +67,19 @@ class FrontendHandler
             }else{
                 throw new \Exception(self::messages['ERROR_FRONTEND_DIR_NOT_FOUND'].$frontendPath);
             }
-            // init backend path
+            // init backend components path
             $destinationPath = $projectPath.'/'.$to;
             if(file_exists($destinationPath) && is_dir($destinationPath) && is_writable($destinationPath)){
                 $this->componentsDestination = $destinationPath;
             }else{
-                throw new \Exception(self::messages['ERROR_BACKEND_DIR_NOT_EXISTS_OR_WRITABLE'].$destinationPath);
+                throw new \Exception(self::messages['ERROR_BACKEND_COMPONENTS_DIR_NOT_EXISTS_OR_WRITABLE'].$destinationPath);
+            }
+            // init backend assets path
+            $backendAssetsPath = $projectPath.'/'.$assetspath;
+            if(file_exists($backendAssetsPath) && is_dir($backendAssetsPath)){
+                $this->backendAssetsPath = $backendAssetsPath;
+            }else{
+                throw new \Exception(self::messages['ERROR_BACKEND_ASSETS_DIR_NOT_EXISTS_OR_WRITABLE'].$backendAssetsPath);
             }
         }
     }
@@ -84,7 +95,8 @@ class FrontendHandler
         $frontendConfigPath = $projectPath.'/comwrap.ezfrontend.config.js';
         #$frontendConfigContent = $this->container->get('twig')->render('ComwrapEzFrontendBundle:Webpack:frontend.config.js.twig',['path'=>$this->frontendPath]);
         $frontendConfigContent =  file_get_contents(__DIR__.'/../Resources/views/Webpack/frontend.config.js.twig');
-        $frontendConfigContent = str_replace('{{ path | raw }}',$this->frontendPath,$frontendConfigContent);
+        $frontendConfigContent = str_replace('{{ frontend_path | raw }}',$this->frontendPath,$frontendConfigContent);
+        $frontendConfigContent = str_replace('{{ backend_assetspath | raw }}',$this->backendAssetsPath,$frontendConfigContent);
         if(file_put_contents($frontendConfigPath, $frontendConfigContent)){
             $output->writeln("\n<info>Frontend config file was created :\n".$frontendConfigPath."</info>");
         }

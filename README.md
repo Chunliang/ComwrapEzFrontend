@@ -39,6 +39,7 @@ comwrap_ez_frontend:
     frontend:
         source: '%frontend_source_path%'
         destination: '%backend_components_path%'
+        assets: '%backend_assets_path%'
 ```
 
 Add the following values in `app/config/parameters.yml`
@@ -48,6 +49,7 @@ parameters:
     ...
     frontend_source_path: PATH_TO_FRONTEND
     backend_components_path: PATH_TO_BACKEND_COMPONENTS
+    backend_assets_path: PATH_TO_BACKEND_ASSETS
 ```
 
 

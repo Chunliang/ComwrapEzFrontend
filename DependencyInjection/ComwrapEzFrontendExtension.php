@@ -36,6 +36,9 @@ class ComwrapEzFrontendExtension extends Extension
             if(isset($config['frontend']['destination'])){
                 $definition->replaceArgument(2, $config['frontend']['destination']);
             }
+            if(isset($config['frontend']['assets'])){
+                $definition->replaceArgument(3, $config['frontend']['assets']);
+            }
         }
     }
 }
