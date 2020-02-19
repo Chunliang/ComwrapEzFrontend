@@ -6,7 +6,7 @@ Symfony Bundle to handle Comwrap Ez Frontend Components and Assets integrations
 
 ### Requirements
 
-PHP 7.1.3+, Symfony 3.4+, eZ Platform 2.5+.
+PHP 7.1.3+, Symfony 3.4+, eZ Platform 2.5+,  eZ Platform 3.x
 
 ### Installing
 
